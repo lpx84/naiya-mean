@@ -1,0 +1,27 @@
+doctype html
+html(ng-app="mean-demo")
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    block links
+  body
+
+    header(ng-include="'/tpl/header.html'")
+
+    block content
+    
+    footer(ng-include="'/tpl/footer.html'")
+    
+    
+    script(src='/plugins/angular/angular.js')
+    script(src='/plugins/angular/angular-resource.js')
+    script(src='/plugins/angular/angular-route.js')
+    script(src='/plugins/jquery/jquery-1.9.1.min.js')
+    script(src='/plugins/jquery/jquery.json.js')
+    script(src='/javascripts/asserts/index.js')
+    script(src='/javascripts/asserts/common.js')
+    script(src='/javascripts/asserts/utils.js')
+    script(src='/javascripts/asserts/transport_jquery.js')
+    script(src='/javascripts/main.js')
+    block scripts

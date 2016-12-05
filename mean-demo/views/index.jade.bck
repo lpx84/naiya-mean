@@ -1,0 +1,12 @@
+extends layout
+
+block links
+  link(rel='stylesheet', href='/stylesheets/asserts/slides.css')
+
+block content
+  h1= title
+  p Welcome to #{title}
+  div(ng-view)
+
+block scripts
+

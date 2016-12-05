@@ -1,0 +1,103 @@
+<div class="top_nav">
+    <script type="text/javascript">
+        //初始化主菜单
+        function sw_nav(obj,tag)
+        {
+            var DisSub = document.getElementById("DisSub_"+obj);
+            var HandleLI= document.getElementById("HandleLI_"+obj);
+            if(tag==1)
+            {
+                DisSub.style.display = "block";
+            }
+            else
+            {
+                DisSub.style.display = "none";
+            }
+
+        }
+
+    </script>
+    <div class="block">
+
+        <div class="header_r">
+            <font id="ECS_MEMBERZONE">
+                欢迎光临本店，<a href="http://10.211.55.6/ecshop/user.php">登录</a> | <a href="http://10.211.55.6/ecshop/user.php?act=register">注册</a> |
+            </font>
+        </div>
+    </div>
+</div>
+<div class=" block header_bg" style="margin-bottom: 0px;">
+  <div class="clear_f"></div>
+  <div class="header_top logo_wrap">
+  <a class="logo_new" href="/ecshop"><img src="/images/logo-chis.png"></a>
+  	<div class="menu">
+      <a href="http://10.211.55.6/ecshop/index.php" class="cur">首页</a>
+      <a href="http://10.211.55.6/ecshop/category.php?id=3">小米</a>
+      <a href="http://10.211.55.6/ecshop/category.php?id=6">华为</a>
+    </div>
+    <div class="ser_n">
+    <div class="g-search">
+      <form id="searchForm" class="searchBox" name="searchForm" method="get" action="http://10.211.55.6/ecshop/search.php" onsubmit="return checkSearchForm()">
+          <div class="search-keyword-box" id="keywrap">
+              <input name="keywords" type="text" id="keyword" class="search-keyword" onfocus="searchFocus()" onblur="searchBlur()">
+          </div>
+          <input type="submit" name="imageField" id="searchBtn" class="iconfont search-btn" value="">
+      </form>
+      <div id="test" class="g-search-hotwords">
+   <script type="text/javascript">
+    
+    <!--
+    function checkSearchForm()
+    {
+        if(document.getElementById('keyword').value)
+        {
+            return true;
+        }
+        else
+        {
+            alert("请输入搜索关键词！");
+            return false;
+        }
+    }
+	
+	function searchFocus(){
+		var wrap=document.getElementById("keywrap");
+		var ipt=document.getElementById("keyword");
+		var hot=document.getElementById("test");
+		var btn=document.getElementById("searchBtn");
+		if(ipt.value.length==0){
+			hot.style.display="none";	
+		}
+		wrap.style.borderColor="#ff6700";
+		btn.style.borderColor="#ff6700";
+	}
+	
+	function searchBlur(){
+		var wrap=document.getElementById("keywrap");
+		var ipt=document.getElementById("keyword");
+		var hot=document.getElementById("test");
+		var btn=document.getElementById("searchBtn");
+		if(ipt.value.length==0){
+			hot.style.display="";
+		}
+		wrap.style.borderColor="";
+		btn.style.borderColor="";
+	}
+    -->
+    
+	
+    </script>
+      </div>
+      </div>
+      
+    </div>
+    <div class="home-ann">
+    <div class="ann-box">
+    <ul class="cart_info">
+      <li id="ECS_CARTINFO"><span class="carts_num none_f"><a href="http://10.211.55.6/ecshop/flow.php" title="查看购物车">0</a></span> <em class="i_cart">&nbsp;</em><a href="http://10.211.55.6/ecshop/flow.php" class="a_cart">查看购物车</a></li>
+    </ul>
+    </div>
+    </div>
+  </div>
+</div>
+<div style="clear:both"></div>

@@ -1,0 +1,9 @@
+<h1>Home Page</h1>
+
+<ul>
+    <li ng-repeat='user in users'>{{user.name}}</li>
+</ul>
+
+<div>
+  <a href="/#/user-add">Add User</a>
+</div>
