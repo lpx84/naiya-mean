@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  div(ng-view)
+  input(id="currUser" type="hidden" value="#{currUser}")
+  input(id="chatUser" type="hidden" value="#{chatUser}")
+block scripts
+  script(src="/plugins/socket.io/socket.io-1.4.5.js")
+  script(src="/javascripts/main.js")
+  script(src="/javascripts/page-init.js")
