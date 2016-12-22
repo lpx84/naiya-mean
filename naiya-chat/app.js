@@ -40,7 +40,7 @@ io.on('connection', function(socket) {
     data.time = new Date();
     console.log(data);
     //socket.broadcast.emit("broadcast:"+data.to, data);
-    io.sockets.emit("message:"+data.to, data);
+    io.sockets.emit("message:"+data.sid, data);
     //socket.emit("broadcast:"+data.to, data);
     //需要解释一下的是，在connection事件的回调函数中，socket表示的是当前连接到服务器的那个客户端。所以代码socket.emit('foo')则只有自己收得到这个事件，而socket.broadcast.emit('foo')则表示向除自己外的所有人发送该事件，另外，上面代码中，io表示服务器整个socket连接，所以代码io.sockets.emit('foo')表示所有人都可以收到该事件。
     

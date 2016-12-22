@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
   var chatUser = {
       username: params['toUsername'],
       name: params['toName'],
-      type: params['type']
+      type: params['totype']
     };
   
   res.render('chat', {
@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/getsessions', function(req, res, next) {
+router.get('/api/getsessions', function(req, res, next) {
   
   var collection = db.get('session');
   //var f = currUser.type == 'customer' ? currUser.username+":"+chatUser.username : chatUser.username+":"+currUser.username;
@@ -47,7 +47,7 @@ router.get('/getsessions', function(req, res, next) {
   },function(err){
     console.log(err);
   }).then(function() {
-    
+    console.log("after query");
   });
 });
 

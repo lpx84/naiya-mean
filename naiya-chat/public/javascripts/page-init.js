@@ -260,5 +260,7 @@ var onlineUsers = [
   }
 ];
 
+var msgs = {};
+
 
 

@@ -12,7 +12,7 @@ app.config(['$routeProvider', function($routeProvider){
   
 }]);
 
-app.controller('ChatCtrl', ['$scope', '$resource', function($scope, $resource){
+app.controller('ChatCtrl', ['$scope', '$resource', '$compile', function($scope, $resource, $compile){
   
   
   $scope.currUser = currUser;
@@ -37,16 +37,95 @@ app.controller('ChatCtrl', ['$scope', '$resource', function($scope, $resource){
   console.log(getTimeString()+" >>> Create connection...");
   
   
-  socket.on("message:"+currUser.username, function(data) {
 
-    appendMsg(data, $scope);
-
-    console.log(getTimeString()+" >>> recieve: "+JSON.stringify(data));
-  });
-  console.log(getTimeString()+" >>> start listen...  user: "+currUser.username);
-
-  
+  // 发送登录信息
   socket.emit("login", currUser);
+  
+  
+  var Sessions = $resource("/api/getsessions");
+  
+  Sessions.query({
+    'username': currUser.username, 
+    'type': currUser.type
+  }, function(res) {
+    for (var i = 0; i < res.length; ++i) {
+      var ele = $(document.createElement("li"));
+      ele.html('<a href="javascript:void(0)"><i class="fa fa-user"></i><span class="nav-label">大米科技</span><span class="read-msg label label-info pull-right" style="display: none;">0</span></a>');
+      var item = res[i];
+      ele.attr("sid", item._id);
+      
+      var chartUserName = currUser.type == 'customer' ? item.merchant : item.customer;
+      var chartName = currUser.type == 'customer' ? item.mname : item.cname;
+      ele.attr("ua", chartUserName);
+      ele.find(".nav-label").html(chartName);
+      ele.attr("ng-click", "selectSession('"+item._id+"', '"+chartUserName+"', '"+chartName+"')");
+      
+      $("#side-menu").append($compile(ele)($scope));
+      
+      
+      if(i == 0) {
+        $scope.selectSession(item._id, chartUserName, chartName);
+      }
+      
+      // 接收消息
+      socket.on("message:"+item._id, function(data) {
+        if(msgs[data.sid] == undefined) {
+          var arr = [];
+          arr.push(data);
+          msgs[data.sid] = arr;
+        } else {
+          msgs[data.sid].push(data);
+        }
+        if (chatUser.sid == data.sid) {
+          appendMsg(data, $scope);
+        } else {
+          var num = parseInt($("li[sid='"+data.sid+"'] a span.read-msg").html());
+          num = num + 1;
+          $("li[sid='"+data.sid+"'] a span.read-msg").html(num);
+          $("li[sid='"+data.sid+"'] a span.read-msg").fadeIn();
+          document.getElementById("tips-audio").play();
+        }
+        
+        console.log(getTimeString()+" >>> recieve: "+JSON.stringify(data));
+      });
+      console.log(getTimeString()+" >>> start listen...  user: "+currUser.username);
+      
+      
+    }
+    
+    
+    
+    
+    
+  });
+  
+  
+  
+  $scope.selectSession = function(sid, username, name) {
+    
+    if (sid == chatUser.sid) {
+      return ;
+    }
+    
+    $("li[sid='"+sid+"'] a span.read-msg").fadeOut();
+    $("li[sid='"+sid+"'] a span.read-msg").html("0");
+    $(".content.content-msg").html("");
+    $("#side-menu li").removeClass("active");
+    $("#side-menu li[sid='"+sid+"']").addClass("active");
+    
+    chatUser["name"] = name;
+    chatUser["username"] = username;
+    chatUser["sid"] = sid;
+    
+    $scope.chatUser = chatUser;
+    var arr = msgs[chatUser.sid];
+    if (arr != undefined) {
+      for(var i = 0; i < arr.length; ++i) {
+        appendMsg(arr[i], $scope);
+      }
+    }
+    
+  }
   
   $scope.sendMsg = function() {
     
@@ -55,18 +134,20 @@ app.controller('ChatCtrl', ['$scope', '$resource', function($scope, $resource){
     }
     
     var msg = {
+      "sid": chatUser.sid,
       "type": "chat",
       "from": currUser.username, 
       "to": chatUser.username, 
       "content": $scope.content
     };
+    
     socket.emit("client", msg);
     console.log(getTimeString()+" >>> send: "+JSON.stringify(msg));
     
     $scope.content = "";
     
     //
-    appendMsg(msg, $scope);
+    //appendMsg(msg, $scope);
     //$scope.msgBoard += msg.from+": "+msg.content+"\n";
   }
   
