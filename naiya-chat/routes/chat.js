@@ -14,25 +14,40 @@ router.get('/', function(req, res, next) {
   
   var currUser = {
       username: params['username'],
-      name: params['name']
+      name: params['name'],
+      type: params['type']
     };
   var chatUser = {
       username: params['toUsername'],
-      name: params['toName']
+      name: params['toName'],
+      type: params['type']
     };
-//  var collection = db.get('session');
-//  collection.find({'customer': currUser.username}, function(err, users){
-//    if (err) throw err;
-//    //res.json(users);
-//    
-//    
-//    
-//  });
   
   res.render('chat', {
     title: '奶牙-CHAT',
     currUser: JSON.stringify(currUser),
     chatUser: JSON.stringify(chatUser)
+  });
+});
+
+router.get('/getsessions', function(req, res, next) {
+  
+  var collection = db.get('session');
+  //var f = currUser.type == 'customer' ? currUser.username+":"+chatUser.username : chatUser.username+":"+currUser.username;
+  var username = req.query['username'];
+  var type = req.query['type'];
+  var condition = {'customer': username};
+  if (type != 'customer') {
+    condition = {'merchant': username};
+  }
+  
+  collection.find(condition).then(function(items){
+    res.json(items);
+    console.log(items);
+  },function(err){
+    console.log(err);
+  }).then(function() {
+    
   });
 });
 

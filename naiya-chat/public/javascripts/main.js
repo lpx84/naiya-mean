@@ -91,7 +91,7 @@ function getTimeString() {
 }
 
 function toBottom() {
-  var content=document.getElementById("content-msg");
+  var content = document.getElementById("content-msg");
   content.scrollTop = content.scrollHeight - content.clientHeight;
 }
 
