@@ -49,53 +49,19 @@ app.controller('ChatCtrl', ['$scope', '$resource', '$compile', function($scope, 
     'type': currUser.type
   }, function(res) {
     for (var i = 0; i < res.length; ++i) {
-      var ele = $(document.createElement("li"));
-      ele.html('<a href="javascript:void(0)"><i class="fa fa-user"></i><span class="nav-label">大米科技</span><span class="read-msg label label-info pull-right" style="display: none;">0</span></a>');
       var item = res[i];
-      ele.attr("sid", item._id);
-      
+      $("#side-menu").append($compile(createChaterItem(item, $scope, socket))($scope));
       var chartUserName = currUser.type == 'customer' ? item.merchant : item.customer;
       var chartName = currUser.type == 'customer' ? item.mname : item.cname;
-      ele.attr("ua", chartUserName);
-      ele.find(".nav-label").html(chartName);
-      ele.attr("ng-click", "selectSession('"+item._id+"', '"+chartUserName+"', '"+chartName+"')");
-      
-      $("#side-menu").append($compile(ele)($scope));
-      
-      
       if(i == 0) {
         $scope.selectSession(item._id, chartUserName, chartName);
       }
       
-      // 接收消息
-      socket.on("message:"+item._id, function(data) {
-        if(msgs[data.sid] == undefined) {
-          var arr = [];
-          arr.push(data);
-          msgs[data.sid] = arr;
-        } else {
-          msgs[data.sid].push(data);
-        }
-        if (chatUser.sid == data.sid) {
-          appendMsg(data, $scope);
-        } else {
-          var num = parseInt($("li[sid='"+data.sid+"'] a span.read-msg").html());
-          num = num + 1;
-          $("li[sid='"+data.sid+"'] a span.read-msg").html(num);
-          $("li[sid='"+data.sid+"'] a span.read-msg").fadeIn();
-          document.getElementById("tips-audio").play();
-        }
-        
-        console.log(getTimeString()+" >>> recieve: "+JSON.stringify(data));
-      });
-      console.log(getTimeString()+" >>> start listen...  user: "+currUser.username);
-      
-      
     }
     
     
-    
-    
+    // 启动定时刷新
+    startUpdateOnTimes($resource, $compile, $scope, socket);
     
   });
   
@@ -201,4 +167,83 @@ function appendMsg(data, $scope) {
   $(".content.content-msg").append(msgEle);
   
   toBottom();
+}
+
+
+function createChaterItem(item, $scope, socket) {
+  var ele = $(document.createElement("li"));
+  ele.html('<a href="javascript:void(0)"><i class="fa fa-user"></i><span class="nav-label">大米科技</span><span class="read-msg label label-info pull-right" style="display: none;">0</span></a>');
+  ele.attr("sid", item._id);
+
+  var chartUserName = currUser.type == 'customer' ? item.merchant : item.customer;
+  var chartName = currUser.type == 'customer' ? item.mname : item.cname;
+  
+  ele.attr("ua", chartUserName);
+  ele.find(".nav-label").html(chartName);
+  ele.attr("ng-click", "selectSession('"+item._id+"', '"+chartUserName+"', '"+chartName+"')");
+  
+  
+  // 接收消息
+  socket.on("message:"+item._id, function(data) {
+    if(msgs[data.sid] == undefined) {
+      var arr = [];
+      arr.push(data);
+      msgs[data.sid] = arr;
+    } else {
+      msgs[data.sid].push(data);
+    }
+    if (chatUser.sid == data.sid) {
+      appendMsg(data, $scope);
+    } else {
+      var num = parseInt($("li[sid='"+data.sid+"'] a span.read-msg").html());
+      num = num + 1;
+      $("li[sid='"+data.sid+"'] a span.read-msg").html(num);
+      $("li[sid='"+data.sid+"'] a span.read-msg").fadeIn();
+      document.getElementById("tips-audio").play();
+    }
+
+    console.log(getTimeString()+" >>> recieve: "+JSON.stringify(data));
+  });
+  console.log(getTimeString()+" >>> start listen...  user: "+item.username);
+  
+  return ele;
+}
+
+function startUpdateOnTimes($resource, $compile, $scope, socket) {
+  setInterval(function() {
+    var Sessions = $resource("/api/getsessions");
+    
+    Sessions.query({
+      'username': currUser.username, 
+      'type': currUser.type,
+      'time': lastUpdateTime
+    }, function(res) {
+      
+      if (res != undefined && res != null && res.length > 0) {
+        console.log("get newer items...");
+        console.log(res);
+        
+        for (var i = 0; i < res.length; ++i) {
+          if (lastUpdateTime < res[i].time) {
+            lastUpdateTime = res[i].time;
+          }
+          $("#side-menu").append($compile(createChaterItem(res[i], $scope, socket))($scope));
+        }
+        
+      }
+    });
+    
+//    Sessions.query({
+//      'username': currUser.username, 
+//      'type': currUser.type,
+//      'time': lastUpdateTime
+//    }, function(res) {
+//      console.log("get newer items...");
+//      console.log(res);
+//      if (res != undefined && res != null) {
+//        lastUpdateTime = res[0].time;
+//      }
+//    });
+    
+  }, 2000);
 }
