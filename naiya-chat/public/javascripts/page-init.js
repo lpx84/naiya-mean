@@ -282,7 +282,7 @@ function nextDateString() {
   return now.format("yyyy-MM-dd hh:mm:ss");
 }
 
-var lastUpdateTime = nextDateString();
+var lastUpdateTime = $("#lastUpdateTime").val();
 console.log("lastTime:"+lastUpdateTime);
 
 

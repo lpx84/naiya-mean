@@ -73,13 +73,12 @@ router.get('/', function(req, res, next) {
       console.log("after query");
     });
   }
-
-  
   
   res.render('chat', {
     title: '奶牙-CHAT',
     currUser: JSON.stringify(currUser),
-    chatUser: JSON.stringify(chatUser)
+    chatUser: JSON.stringify(chatUser),
+    lastUpdateTime: getTimeString()
   });
 });
 
