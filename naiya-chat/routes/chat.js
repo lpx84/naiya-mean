@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
     };
   
   if (currUser.type == 'merchant') {
-    currUser["avator"] = "xiaomi.png";
+    currUser["avator"] = "mer.jpeg";
   } else {
     currUser["avator"] = "profile_small.jpg";
   }
