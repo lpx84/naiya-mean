@@ -1,0 +1,11 @@
+<div>
+  当前用户名：<input id="username" ng-model="user.username"/> <br/>
+  目的地用户名：<input id="tousername" ng-model="user.tousername"/> <br/>
+  <button ng-click="startListen()">开始连接</button>
+  <div>
+    <h2>聊天窗口</h2>
+    <div> <textarea ng-model="msgBoard" rows="10" cols="50"></textarea> </div>
+  </div>
+  <textarea id="msg-box" placeholder="请输入要发送的消息" rows="3" cols="50" ng-model="user.content"></textarea>
+  <button id="sendBtn" ng-click="sendMsg()">发送</button>
+</div>

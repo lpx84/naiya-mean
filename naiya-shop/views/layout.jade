@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/font-awesome.css')
+    link(rel='stylesheet', href='/stylesheets/animate.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/awesome-bootstrap-checkbox.css')
+    link(rel='stylesheet', href='/stylesheets/custom.css')
+  body(ng-app="naiya-chat", class="pace-done")
+  
+    header(ng-include="'/tpl/header.html'")
+  
+    block content
+    
+    footer(ng-include="'/tpl/footer.html'")
+
+    script(src='/plugins/angular/angular.js')
+    script(src='/plugins/angular/angular-resource.js')
+    script(src='/plugins/angular/angular-route.js')
+    
+    
+    script(src='/javascripts/assert/jquery-2.1.1.js')
+    script(src='/javascripts/assert/bootstrap.min.js')
+    script(src='/javascripts/assert/jquery.metisMenu.js')
+    script(src='/javascripts/assert/jquery.slimscroll.min.js')
+    
+    script(src='/javascripts/assert/inspinia.js')
+    script(src='/javascripts/assert/pace.min.js')
+    <!-- iCheck -->
+    script(src='/javascripts/assert/icheck.min.js')
+    block scripts
