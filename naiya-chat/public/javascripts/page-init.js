@@ -250,7 +250,7 @@ Date.prototype.format = function (fmt) { //author: meizz
 var currUser = JSON.parse(document.getElementById("currUser").value);
 var chatJson = document.getElementById("chatUser").value;
 var chatUser = chatJson == "" || chatJson == undefined ? {} : JSON.parse(chatJson);
-
+ 
 var onlineUsers = [
   {
     "username": "system",
